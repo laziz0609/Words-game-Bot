@@ -24,18 +24,15 @@ async def change_name_handler(message: types.Message, state: FSMContext):
 async def process_new_name(message: types.Message, state: FSMContext):
     new_name = message.text.strip()
     
-    if new_name.lower() == "❌ bekor qilish":
+    if new_name.lower() == "❌ bekor qilish" or new_name.lower() == "/start":
         await message.answer("Ism o'zgartirish bekor qilindi.", reply_markup=menu_kb)
         await state.clear()
         return
     
     if new_name[0].isalpha():
-        if message.text == '/start':
-            await message.answer("Iltimos ismingizni kiriting")
-        else:
-            await save_user(message.from_user.id, new_name)
-            await message.answer(f"Sizning ismingiz muvaffaqiyatli yangilandi: {new_name}", reply_markup=menu_kb)
-            await state.clear()
+        await save_user(message.from_user.id, new_name)
+        await message.answer(f"Sizning ismingiz muvaffaqiyatli yangilandi: {new_name}", reply_markup=menu_kb)
+        await state.clear()
     else:
         await message.answer("❗ Iltimos, ism faqat harflardan tashkil topishi kerak. Qayta kiriting.")
 
